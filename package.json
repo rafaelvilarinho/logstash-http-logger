@@ -1,0 +1,27 @@
+{
+  "name": "logstash-http-logger",
+  "version": "1.0.3",
+  "description": "Logstash HTTP Logger for javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage --verbose",
+    "build": "tsc && copyfiles package.json Readme.md ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafaelvilarinho/logstash-http-logger.git"
+  },
+  "author": "Rafael Vilarinho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rafaelvilarinho/logstash-http-logger/issues"
+  },
+  "homepage": "https://github.com/rafaelvilarinho/logstash-http-logger#readme",
+  "dependencies": {
+    "isomorphic-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/isomorphic-fetch": "0.0.35",
+    "copyfiles": "^2.4.1"
+  }
+}
