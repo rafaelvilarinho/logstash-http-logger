@@ -3,7 +3,7 @@
 ## Logger Levels
 
 OFF = 0
-FATAL = 1 
+FATAL = 1
 ERROR = 2
 WARN = 3
 INFO = 4

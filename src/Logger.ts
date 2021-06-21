@@ -14,37 +14,37 @@ export default class Logger {
     return level <= this.level
   }
 
+  public fatal(message: string, content: unknown): void {
+    this.allowLog(LoggerLevelEnum.FATAL) && this.log('fatal', message, content)
+  }
+
+  public error(message: string, content: unknown): void {
+    this.allowLog(LoggerLevelEnum.ERROR) && this.log('error', message, content)
+  }
+
+  public warn(message: string): void {
+    this.allowLog(LoggerLevelEnum.WARN) && this.log('warn', message)
+  }
+
   public info(message: string): void {
     this.allowLog(LoggerLevelEnum.INFO) && this.log('info', message)
   }
 
-  public warn(message: string, ...contents: unknown[]): void {
-    this.allowLog(LoggerLevelEnum.WARN) && this.log('warn', message, contents)
+  public debug(message: string): void {
+    this.allowLog(LoggerLevelEnum.DEBUG) && this.log('debug', message)
   }
 
-  public error(message: string, ...contents: unknown[]): void {
-    this.allowLog(LoggerLevelEnum.ERROR) && this.log('error', message, contents)
+  public trace(content: unknown): void {
+    this.allowLog(LoggerLevelEnum.TRACE) && this.log('trace', '', content)
   }
 
-  public fatal(message: string, ...contents: unknown[]): void {
-    this.allowLog(LoggerLevelEnum.FATAL) && this.log('fatal', message, contents)
-  }
-
-  public debug(message: string, ...contents: unknown[]): void {
-    this.allowLog(LoggerLevelEnum.DEBUG) && this.log('debug', message, contents)
-  }
-
-  public trace(message: string, ...contents: unknown[]): void {
-    this.allowLog(LoggerLevelEnum.TRACE) && this.log('trace', message, contents)
-  }
-
-  private log(level: string, message: string, ...contents: unknown[]): void {
+  private log(level: string, message: string, content?: unknown): void {
     try {
       fetch(this.logstashUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          data: contents,
+          data: content,
           '@tags': this.tags || [],
           'log.level': level,
           message
