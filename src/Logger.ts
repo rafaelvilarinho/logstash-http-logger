@@ -1,13 +1,16 @@
 import fetch from 'isomorphic-fetch';
+import { ILoggerConfiguration } from './ILoggerConfiguration';
 import LoggerLevelEnum from './LoggerLevelEnum';
 
 export default class Logger {
+  public _requestId: string
+
   constructor (
     private logstashUrl: string,
     private level: number = LoggerLevelEnum.INFO,
-    private tags?: string[],
+    private configuration?: ILoggerConfiguration,
   ) {
-
+    this._requestId = ''
   }
 
   private allowLog (level: LoggerLevelEnum): boolean {
@@ -45,7 +48,8 @@ export default class Logger {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           data: content,
-          '@tags': this.tags || [],
+          '@tags': this.configuration?.tags || [],
+          requestId: this._requestId,
           'log.level': level,
           message
         }),
