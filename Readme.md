@@ -51,17 +51,17 @@ const config = {
   tags: ['logger-dev']
 };
 
-const Logger = new LogstashHttpLogger('url-logstash-with-port', 'INFO', config);
+const Logger = new LogstashHttpLogger('url-logstash-with-port', 7, config); // instance Logger with ALL (7) level
 
 Logger.info('Testing logger');
 Logger.trace({ data: { test: true } });
 Logger.error(new Error('Testing error'));
 
-# Using Logger with a RequestId
+// Using Logger with a RequestId
 
 Logger._requestId = '1234';
 
-# These 3 statements will log with requestId = 1234
+// These 3 statements will log with requestId = 1234
 Logger.info('Testing logger with requestId');
 Logger.trace({ data: { test: false } });
 Logger.error(new Error('Testing error with requestId'));
