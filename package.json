@@ -1,6 +1,6 @@
 {
   "name": "logstash-http-logger",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "description": "Logstash HTTP Logger for javascript",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,12 @@
     "url": "git+https://github.com/rafaelvilarinho/logstash-http-logger.git"
   },
   "author": "Rafael Vilarinho",
-  "license": "ISC",
+  "licenses": [
+    {
+        "type": "GNUv2",
+        "url": "https://github.com/rafaelvilarinho/logstash-http-logger/blob/master/LICENSE"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/rafaelvilarinho/logstash-http-logger/issues"
   },

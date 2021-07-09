@@ -3,7 +3,7 @@ import { ILoggerConfiguration } from './ILoggerConfiguration';
 import LoggerLevelEnum from './LoggerLevelEnum';
 
 export default class Logger {
-  public _requestId: string
+  private _requestId: string
 
   constructor (
     private logstashUrl: string,
@@ -17,11 +17,11 @@ export default class Logger {
     return level <= this.level
   }
 
-  public fatal(message: string, content: unknown): void {
+  public fatal(message: string, content: Record<string, unknown>): void {
     this.allowLog(LoggerLevelEnum.FATAL) && this.log('fatal', message, content)
   }
 
-  public error(message: string, content: unknown): void {
+  public error(message: string, content: Record<string, unknown>): void {
     this.allowLog(LoggerLevelEnum.ERROR) && this.log('error', message, content)
   }
 
@@ -37,21 +37,30 @@ export default class Logger {
     this.allowLog(LoggerLevelEnum.DEBUG) && this.log('debug', message)
   }
 
-  public trace(content: unknown): void {
+  public trace(content: Record<string, unknown>): void {
     this.allowLog(LoggerLevelEnum.TRACE) && this.log('trace', '', content)
   }
 
-  private log(level: string, message: string, content?: unknown): void {
+  public setContextId (id: string): void {
+    this._requestId = id
+  }
+
+  private log(level: string, message: string, content?: Record<string, unknown>): void {
     try {
+      const bodyContent = this.configuration?.defaultLayout ? {
+        ...this.configuration.defaultLayout,
+        ...content
+      } : { ...content }
+
       fetch(this.logstashUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          data: content,
           '@tags': this.configuration?.tags || [],
-          requestId: this._requestId,
+          [this.configuration?.contextIdPropertyName || 'contextId']: this._requestId,
           'log.level': level,
-          message
+          message,
+          ...bodyContent
         }),
       }).catch(console.log);
     } catch (error) {

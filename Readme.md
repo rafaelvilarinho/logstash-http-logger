@@ -35,7 +35,9 @@ A simple logger with logstash integration using HTTP protocol.
 
 ```
 {
-  tags?: string[] 
+  tags?: string[], // (optional)
+  contextIdPropertyName?: string, // (optional) define your custom property name for context id
+  defaultLayout?: Record<string, unknown> // (optional) define your custom log layout
 }
 ```
 
@@ -51,7 +53,7 @@ const config = {
   tags: ['logger-dev']
 };
 
-const Logger = new LogstashHttpLogger('url-logstash-with-port', 7, config); // instance Logger with ALL (7) level
+const Logger = new LogstashHttpLogger('url-logstash-with-port', 7, config); // Logger instance with ALL (7) level
 
 Logger.info('Testing logger');
 Logger.trace({ data: { test: true } });
@@ -59,7 +61,7 @@ Logger.error(new Error('Testing error'));
 
 // Using Logger with a RequestId
 
-Logger._requestId = '1234';
+Logger.setContextId('1234');
 
 // These 3 statements will log with requestId = 1234
 Logger.info('Testing logger with requestId');
